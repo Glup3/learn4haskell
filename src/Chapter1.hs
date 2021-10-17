@@ -209,31 +209,31 @@ So, the output in this example means that 'False' has type 'Bool'.
 > Try to guess first and then compare your expectations with GHCi output
 
 >>> :t True
-Bool
+True :: Bool
 >>> :t 'a'
-Char
+'a' :: Char
 >>> :t 42
-Num p => p
+42 :: Num p => p
 
 A pair of boolean and char:
 >>> :t (True, 'x')
-(Bool, Char)
+(True, 'x') :: (Bool, Char)
 
 Boolean negation:
 >>> :t not
-Bool -> Bool
+not :: Bool -> Bool
 
 Boolean 'and' operator:
 >>> :t (&&)
-Bool -> Bool -> Bool
+(&&) :: Bool -> Bool -> Bool
 
 Addition of two numbers:
 >>> :t (+)
-Num a => a -> a -> a
+(+) :: Num a => a -> a -> a
 
 Maximum of two values:
 >>> :t max
-Ord a => a -> a -> a
+max :: Ord a => a -> a -> a
 
 You might not understand each type at this moment, but don't worry! You've only
 started your Haskell journey. Types will become your friends soon.
@@ -492,7 +492,7 @@ Implement a function that returns the last digit of a given number.
 -}
 -- DON'T FORGET TO SPECIFY THE TYPE IN HERE
 lastDigit :: Int -> Int
-lastDigit n = n `mod` 10
+lastDigit n = mod (abs n) 10
 
 
 {- |
@@ -558,14 +558,11 @@ Casual reminder about adding top-level type signatures for all functions :)
 
 mid :: Int -> Int -> Int -> Int 
 mid x y z
-    | x == y && y == z = x
-    | x < y && y < z = y
-    | z < y && y < x = y
-    | y < x && x < z = x
-    | z < x && x < y = x
-    | x < z && z < y = z
-    | y < z && z < x = z
-    | otherwise = 0 -- if there is no mid among three numbers
+  | x <= z && z <= y = z
+  | y <= z && z <= x = z
+  | y <= x && x <= z = x
+  | z <= x && x <= y = x
+  | otherwise = y
 
 {- |
 =⚔️= Task 8
@@ -652,8 +649,8 @@ specifying complex expressions.
 
 sumLast2 :: Int -> Int
 sumLast2 n =
-    let z = mod n 10
-        y = div (mod n 100) 10
+    let z = mod (abs n) 10
+        y = div (mod (abs n) 100) 10
     in z + y
 
 
